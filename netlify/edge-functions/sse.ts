@@ -1,37 +1,36 @@
 import { TextEncoder } from 'node:util'; // Adjusted import for Deno compatibility
-// import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-// // Initialize Supabase client
-// const SUPABASE_URL = process.env.SUPABASE_URL || '';
-// const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
-// const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Initialize Supabase client
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Function to perform backend operations
-// async function performBackendOperations() {
-//   try {
-//     // Example backend health check logic
-//     const healthCheck = {
-//       status: 'healthy',
-//       timestamp: new Date().toISOString(),
-//     };
+async function performBackendOperations() {
+  try {
+    // Example backend health check logic
+    const healthCheck = {
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+    };
 
-//     // Fetch open orders from Supabase (adjust query as needed)
-//     const { data: orders, error } = await supabase
-//       .from('orders') // Replace 'orders' with your actual table name
-//       .select('*')
-//       .eq('state', 'open'); // Adjust the condition as necessary
+    // Fetch open orders from Supabase (adjust query as needed)
+    const { data: posts, error } = await supabase
+      .from('posts') // Replace 'orders' with your actual table name
+      .select('*')
 
-//     if (error) {
-//       console.error('Error fetching open orders:', error);
-//       return { healthCheck, orders: [], error: error.message };
-//     }
+    if (error) {
+      console.error('Error fetching open orders:', error);
+      return { healthCheck, posts: [], error: error.message };
+    }
 
-//     return { healthCheck, orders };
-//   } catch (error) {
-//     console.error('Error performing backend operations:', error);
-//     return { error: error || 'An unexpected error occurred' };
-//   }
-// }
+    return { healthCheck, posts };
+  } catch (error) {
+    console.error('Error performing backend operations:', error);
+    return { error: error || 'An unexpected error occurred' };
+  }
+}
 
 // Export default function for SSE
 export default async (request: Request) => {
@@ -41,7 +40,8 @@ export default async (request: Request) => {
     async start(controller) {
       async function sendData() {
         try {
-          const data = { message: 'Hello, world!', date: new Date() }; // Replace with actual data
+          const posts = await performBackendOperations();
+          const data = { message: 'Hello, world!', date: new Date() , posts}; // Replace with actual data
           controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
         } catch (error) {
           console.error("Error performing backend operations:", error);
