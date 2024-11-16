@@ -20,7 +20,7 @@ onMounted(() => {
   }
 
   // Create a new SSE connection
-  eventSource = new EventSource('/api/events')
+  eventSource = new EventSource('/api/sse')
 
   eventSource.onopen = () => {
     console.log('Connection to SSE established')

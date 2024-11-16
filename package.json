@@ -10,9 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/supabase": "^1.4.2",
     "nuxt": "^3.13.0",
+    "nuxt-cron": "^1.6.0",
     "vue": "latest",
-    "vue-router": "latest",
-    "nuxt-cron": "^1.6.0"
+    "vue-router": "latest"
   }
 }
