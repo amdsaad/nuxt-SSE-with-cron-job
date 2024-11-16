@@ -4,7 +4,12 @@ import { createClient } from '@supabase/supabase-js';
 // Initialize Supabase client
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
+
+if (!SUPABASE_KEY || !SUPABASE_URL) {
+  throw new Error("Supabase credentials are missing.");
+}
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 
 // Function to perform backend operations
 async function performBackendOperations() {
