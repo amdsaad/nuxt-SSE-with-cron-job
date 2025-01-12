@@ -7,8 +7,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-
 const message = ref('Waiting for updates...')
 let eventSource // Declare eventSource globally in the component
 
